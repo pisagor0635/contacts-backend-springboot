@@ -1,5 +1,6 @@
 package com.ab.contactsbackend.config;
 
+import com.ab.contactsbackend.controller.ContactController;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.PathSelectors;
@@ -13,7 +14,7 @@ public class SpringFoxConfig {
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
-                .apis(RequestHandlerSelectors.any())
+                .apis(RequestHandlerSelectors.basePackage("com.ab"))
                 .paths(PathSelectors.any())
                 .build();
     }
