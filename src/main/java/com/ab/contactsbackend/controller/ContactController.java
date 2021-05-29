@@ -1,8 +1,10 @@
 package com.ab.contactsbackend.controller;
 
+import com.ab.contactsbackend.exception.ResourceNotFoundException;
 import com.ab.contactsbackend.model.Contact;
 import com.ab.contactsbackend.repository.ContactRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,6 +27,13 @@ public class ContactController {
     @PostMapping("/contacts")
     public Contact createContact(@RequestBody Contact contact) {
         return contactRepository.save(contact);
+    }
+
+    //get contact by id rest api
+    @GetMapping("/contacts/{id}")
+    public ResponseEntity<Contact>  getContactById(@PathVariable Long id) {
+        Contact contact = contactRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Contact not exist with id : " + id));
+        return ResponseEntity.ok(contact);
     }
 
 }
