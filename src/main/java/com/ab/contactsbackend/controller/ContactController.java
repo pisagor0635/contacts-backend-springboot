@@ -36,4 +36,21 @@ public class ContactController {
         return ResponseEntity.ok(contact);
     }
 
+    //update contact rest api
+    @PostMapping("/contacts/{id}")
+    public ResponseEntity<Contact> updateContact(@PathVariable Long id, @RequestBody Contact contactUpdated) {
+
+        Contact contact = contactRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Contact not exist with id : " + id));
+
+        contact.setFirstName(contactUpdated.getFirstName());
+        contact.setLastName(contactUpdated.getLastName());
+        contact.setEmail(contactUpdated.getEmail());
+        contact.setPhoneNumber(contactUpdated.getPhoneNumber());
+
+        contact = contactRepository.save(contact);
+
+        return ResponseEntity.ok(contact);
+
+    }
+
 }
