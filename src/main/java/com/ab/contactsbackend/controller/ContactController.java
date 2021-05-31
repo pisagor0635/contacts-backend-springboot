@@ -7,11 +7,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/api/v1/")
-@CrossOrigin(origins = "http://localhost:4200")
 public class ContactController {
 
     @Autowired
@@ -37,7 +39,7 @@ public class ContactController {
     }
 
     //update contact rest api
-    @PostMapping("/contacts/{id}")
+    @PutMapping("/contacts/{id}")
     public ResponseEntity<Contact> updateContact(@PathVariable Long id, @RequestBody Contact contactUpdated) {
 
         Contact contact = contactRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Contact not exist with id : " + id));
@@ -51,6 +53,19 @@ public class ContactController {
 
         return ResponseEntity.ok(contact);
 
+    }
+
+    //delete contact rest api
+    @DeleteMapping("/contacts/{id}")
+    public ResponseEntity<Map<String,Boolean>> deleteContact(@PathVariable Long id){
+
+        Contact contact = contactRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Contact not exist with id : " + id));
+
+        contactRepository.delete(contact);
+        Map<String ,Boolean> response = new HashMap<>();
+        response.put("deleted",true);
+
+        return ResponseEntity.ok(response);
     }
 
 }
